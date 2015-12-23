@@ -34,7 +34,7 @@ public:
 class Learner {
 public:
     Learner() : parser_(NULL), model_(NULL), data_set_(NULL), 
-        iters_(10), batch_size_(10) {}
+        iters_(100), batch_size_(10) {}
     
     void init(Parser* parser, DataSet* dataset);
     int learn();

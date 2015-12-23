@@ -17,9 +17,15 @@ namespace semantic {
 
 class FeatureExtractor {
 public:
+    FeatureExtractor() : ngram_(3) {}
+
     void extract_features(Example& ex, Derivation* deriv);
     void extract_local(Example& ex, Derivation* deriv);
     void extract_recursive(Example& ex, Derivation* deriv);
+    void extract_rule(Example& ex, Derivation* deriv);
+    void extract_prior_recursively(Example& ex, Derivation* deriv);
+private:
+    int ngram_;
 };
 
 }

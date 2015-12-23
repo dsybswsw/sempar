@@ -115,7 +115,7 @@ void Learner::compute_gradients_and_obj(Example& ex, Derivation* deriv,
     float_t dec = pred_score - true_score;
     // collect gradients.
     increment_deriv(deriv, dec, gradients);
-    float jv = -(true_score * log(pred_score) + (1 - true_score) * log(1 - pred_score));
+    float jv = -(true_score * log(pred_score + math::EPS) + (1 - true_score) * log(1 - pred_score + math::EPS));
     LOG(INFO) << "objective score of [" << ex._index << ":" << ex._uttrance << "] is " << jv;
     acc_obj += jv; // accumulate objective score.
 }

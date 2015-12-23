@@ -189,9 +189,13 @@ void ParserState::extract_result() {
     Cell& cell = _chart[0][_token_num];
     if (cell.count(ROOT) == 0) {return;}
     vector<Derivation*>& derivs = cell.at(ROOT);
-    for (int i = 0; i < _example->_nbest; ++i) {
+    LOG(INFO) << "parsing tree number is " << derivs.size() << " and extract " 
+        << _example->_nbest << " best results.";
+    int res_size = (_example->_nbest > derivs.size() ? derivs.size() : _example->_nbest);
+    for (int i = 0; i < res_size; ++i) {
         Json::Value par_tree = derivs[i]->to_json();
         _example->_trees.push_back(par_tree);
+        LOG(INFO) << i + 1 << " best result score is " << derivs[i]->_score;
     }
 }
 
