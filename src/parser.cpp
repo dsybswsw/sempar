@@ -185,14 +185,21 @@ void ParserState::build(int start, int end) {
     // prune the cell.
 }
 
+bool compare(Derivation* deriv1, Derivation* deriv2) {
+    return (deriv1->_score > deriv2->_score);
+}
+
 void ParserState::extract_result() {
     Cell& cell = _chart[0][_token_num];
     if (cell.count(ROOT) == 0) {return;}
     vector<Derivation*>& derivs = cell.at(ROOT);
     LOG(INFO) << "parsing tree number is " << derivs.size() << " and extract " 
         << _example->_nbest << " best results.";
-    int res_size = (_example->_nbest > derivs.size() ? derivs.size() : _example->_nbest);
-    for (int i = 0; i < res_size; ++i) {
+    std::sort(derivs.begin(), derivs.end(), compare);
+    if (derivs.size() > _example->_nbest) {
+        derivs.resize(_example->_nbest);
+    }
+    for (int i = 0; i < derivs.size(); ++i) {
         Json::Value par_tree = derivs[i]->to_json();
         _example->_trees.push_back(par_tree);
         LOG(INFO) << i + 1 << " best result score is " << derivs[i]->_score;
