@@ -9,7 +9,7 @@ using std::vector;
 
 void Params::update(HashMap<string, float_t>& gradients) {
     ++update_num_;
-    float_t step_size = 1.33;
+    float_t step_size = compulte_step_size();
     for (auto entry : gradients) {
         string feature = entry.first;
         float_t grad = entry.second;
@@ -76,6 +76,11 @@ int Params::read(const char* path) {
         weights_[feat] = weight;
     }
     return 0;
+}
+
+float_t Params::compulte_step_size() {
+    if (update_num_ <= 0) {update_num_ = 1;}
+    return init_step_ / pow(update_num_, step_reduction_);
 }
 
 }

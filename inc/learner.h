@@ -34,7 +34,8 @@ public:
 class Learner {
 public:
     Learner() : parser_(NULL), model_(NULL), data_set_(NULL), 
-        iters_(100), batch_size_(10) {}
+        iters_(200), batch_size_(10), relative_func_thres_(1e-3), 
+        max_pass_converge_(3) {}
     
     void init(Parser* parser, DataSet* dataset);
     int learn();
@@ -57,7 +58,7 @@ public:
             HashMap<std::string, float_t>& feat_map);
 
     void accumulate_grads(HashMap<std::string, float_t>& grads, HashMap<std::string, float_t>& incomes);
-    void print_statistic(std::vector<Evaluation>& evals);
+    void collect_statistics(std::vector<Evaluation>& evals);
     void collect_cost(std::vector<Evaluation>& evals, Evaluation& eval);
 protected:
     Parser* parser_;
@@ -65,6 +66,8 @@ protected:
     DataSet* data_set_;
     int iters_;
     int batch_size_;
+    float_t relative_func_thres_;
+    int max_pass_converge_;
 
     std::string dest_path_;
 };

@@ -33,6 +33,7 @@ float_t Evaluation::get_float(const string& name) {
 
 int Learner::learn() {
     vector<Evaluation> evals;
+    int check_converge = 0;
     for (int iter = 0; iter < iters_; ++iter) {
         vector<Evaluation> iter_evals;
         for (auto grp_iter : data_set_->groups()) {
@@ -45,13 +46,23 @@ int Learner::learn() {
         Evaluation eval;
         collect_cost(iter_evals, eval);
         evals.push_back(eval);
-        print_statistic(evals);
+        collect_statistics(evals);
         // print statiscal information.
         string tmp_model = dest_path_ + "/" + "param_" 
             + boost::lexical_cast<string>(iter) + ".mdl.txt";
         model_->consist(tmp_model.c_str());
         LOG(INFO) << "----training the " << iter << " 'st iteration.";
-
+        float_t diff = evals[evals.size() - 1].get_float("diff");
+        if (diff < relative_func_thres_) {
+            ++check_converge;
+        } else {
+            check_converge = 0;
+        }
+        if (check_converge >= max_pass_converge_) {
+            LOG(INFO) << "SGD early stops because function converges and " 
+                << "break at iter " << iter;
+            break;
+        }
     }
     return 0;
 }
@@ -200,7 +211,7 @@ void Learner::accumulate_grads(HashMap<string, float_t>& grads, HashMap<string, 
     }
 }
 
-void Learner::print_statistic(vector<Evaluation>& evals) {
+void Learner::collect_statistics(vector<Evaluation>& evals) {
     if (evals.empty()) {return;}
     // step 1, calculate mean cost.
     int size = (int)evals.size();
@@ -216,6 +227,7 @@ void Learner::print_statistic(vector<Evaluation>& evals) {
         float_t bf_mc = one_bf_last.get_float("mean_cost");
         diff = fabs(mean_cost - bf_mc) / (bf_mc + math::EPS);
     }
+    last.add("diff", diff);
     char info[MAX_BUFF_LEN];
     snprintf(info, MAX_BUFF_LEN, "iter=%d obj=%f diff=%f", size, mean_cost, diff);
     info[MAX_BUFF_LEN - 1] = '\0';
