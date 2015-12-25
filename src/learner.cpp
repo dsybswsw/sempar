@@ -104,15 +104,20 @@ void Learner::update_counts(Example& ex, HashMap<string, float_t>& counts) {
     compute_expected_counts(ex, ex._parsing_derivs, counts);
 }
 
-void Learner::compute_gradients_and_obj(Example& ex, HashMap<string, float_t>& gradients, float_t& acc_obj) {
+void Learner::compute_gradients_and_obj(
+        Example& ex, 
+        HashMap<string, float_t>& gradients, 
+        float_t& acc_obj) {
     vector<Derivation*>& derivs = ex._parsing_derivs;
     for (auto deriv : derivs) {
         compute_gradients_and_obj(ex, deriv, gradients, acc_obj);
     }
 }
 
-void Learner::compute_gradients_and_obj(Example& ex, Derivation* deriv, 
-        HashMap<string, float_t>& gradients, float_t& acc_obj) {
+void Learner::compute_gradients_and_obj(
+        Example& ex, Derivation* deriv, 
+        HashMap<string, float_t>& gradients, 
+        float_t& acc_obj) {
     float_t true_score;
     float_t pred_score;
     size_t hash = deriv->hashcode();
@@ -136,7 +141,9 @@ void Learner::update_weights(HashMap<string, float_t>& gradients) {
     gradients.clear();
 }
 
-void Learner::compute_expected_counts(Example& ex, vector<Derivation*>& derivs, 
+void Learner::compute_expected_counts(
+        Example& ex, 
+        vector<Derivation*>& derivs, 
         HashMap<string, float_t>& counts) {
     int size = derivs.size();
     vector<float_t> true_scores(size);
@@ -162,7 +169,9 @@ void Learner::compute_expected_counts(Example& ex, vector<Derivation*>& derivs,
     }
 }
 
-void Learner::increment_deriv(Derivation* deriv, float_t factor, 
+void Learner::increment_deriv(
+        Derivation* deriv, 
+        float_t factor, 
         HashMap<string, float_t>& grad_map) {
     if (deriv == NULL) {return;}
     FeatureVector& feat_vec = deriv->local_feature_;
@@ -175,7 +184,9 @@ void Learner::increment_deriv(Derivation* deriv, float_t factor,
     }
 }
 
-void Learner::increment(float_t factor, HashMap<string, float_t>& grad_map, 
+void Learner::increment(
+        float_t factor, 
+        HashMap<string, float_t>& grad_map, 
         HashMap<string, float_t>& feat_map) {
     for (auto entry : feat_map) {
         if (grad_map.count(entry.first) > 0) {

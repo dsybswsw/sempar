@@ -28,7 +28,7 @@ int main(int argc, char* argv[]) {
     LOG(INFO) << "Finish initialization.";
     
     Params* model = new Params();
-    ret = model->read("data/model/param_99.mdl.txt");
+    ret = model->read("data/model/param_toy.mdl.txt");
     assert(ret == 0);
 
     string query = "-1*3+2*4";

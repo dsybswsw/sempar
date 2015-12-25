@@ -1,3 +1,13 @@
+/**
+ * parser.h
+ *
+ * Author: wushiwei
+ * Created on: 2015-02-15
+ *
+ * Copyright (c) wushiwei. All Rights Reserved
+ *
+ */
+
 #include "parser.h"
 
 namespace semantic {

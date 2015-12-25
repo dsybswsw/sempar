@@ -46,20 +46,51 @@ public:
 
     void update_counts(Example& ex, HashMap<std::string, float_t>& counts);
 
-    void compute_gradients_and_obj(Example& ex, HashMap<std::string, float_t>& grads, float_t& obj);
-    void compute_gradients_and_obj(Example& ex, Derivation* deriv, 
-            HashMap<std::string, float_t>& grads, float_t& obj);
+    void compute_gradients_and_obj(Example& ex, 
+                                   HashMap<std::string, float_t>& grads, 
+                                   float_t& obj);
+    
+    /**
+     * Abstract interface for computing the objective funtion and parameter gradients.
+     * Flexible to change cost function or parsing algorithms and their expected counts.
+     * For batch learning, function value and gradients are accumulated after
+     * going through each training sample.
+     */ 
+    virtual void compute_gradients_and_obj(
+            Example& ex, 
+            Derivation* deriv, 
+            HashMap<std::string, float_t>& grads, 
+            float_t& obj);
 
-    void compute_expected_counts(Example& ex, std::vector<Derivation*>& derivs, 
+    /**
+     * Abstract interface for updating parameters with function gradients.
+     * default optimization algorithm is SGD and can be overloaded with other
+     * algorithm like L-BFGS etc...
+     */ 
+    virtual void update_weights(HashMap<std::string, float_t>& counts);
+
+    void compute_expected_counts(
+            Example& ex, 
+            std::vector<Derivation*>& derivs, 
             HashMap<std::string, float_t>& counts);
-    void update_weights(HashMap<std::string, float_t>& counts);
-    void increment_deriv(Derivation* deriv, float_t factor, HashMap<std::string, float_t>& grads);
-    void increment(float_t factor, HashMap<std::string, float_t>& grad_map, 
+
+    void increment_deriv(
+            Derivation* deriv, 
+            float_t factor, 
+            HashMap<std::string, float_t>& grads);
+
+    void increment(
+            float_t factor, 
+            HashMap<std::string, float_t>& grad_map, 
             HashMap<std::string, float_t>& feat_map);
 
-    void accumulate_grads(HashMap<std::string, float_t>& grads, HashMap<std::string, float_t>& incomes);
+    void accumulate_grads(
+            HashMap<std::string, float_t>& grads, 
+            HashMap<std::string, float_t>& incomes);
+
     void collect_statistics(std::vector<Evaluation>& evals);
     void collect_cost(std::vector<Evaluation>& evals, Evaluation& eval);
+
 protected:
     Parser* parser_;
     Params* model_;
