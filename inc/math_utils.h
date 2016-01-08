@@ -20,7 +20,12 @@ namespace math {
 const static float_t EPS = 10e-6;
 
 inline float_t sigmoid(float_t val) {
-    return 1.0 / (1.0 + exp(-val));
+    if (val > 0.0) {
+        return 1.0 / (1.0 + exp(-val));
+    } else {
+        float expv = exp(val);
+        return expv / (1.0 + expv);
+    }
 }
 
 }
