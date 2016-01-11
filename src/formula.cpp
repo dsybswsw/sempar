@@ -84,7 +84,8 @@ int Rule::init(const std::string& line) {
     string cat_val = symbols[0];
     int fnd = cat_val.find("$");
     if (fnd != 0) {
-        WARN("[rule:%s] left hand symbols must be a non-terminal, and start with $", gram.c_str());
+        LOG(INFO) << "[rule:%s] left hand symbols must be a non-terminal," 
+            << " and start with $" << gram.c_str();
         return -1;
     }
     _lhs = cat_val.substr(1);
