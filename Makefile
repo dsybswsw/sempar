@@ -6,7 +6,7 @@ INCLUDEDIR= \
          -I$(CRF_PATH) \
          -I./common \
 		 -I./basenlp	\
-         -I./lex-align \
+         -I./lexicon \
          -I./core
 
 LIBDIR=	\
@@ -22,7 +22,7 @@ TEST = ./test
 GCC = g++
 CPPFLAGS = -g -O2 -Wall -Winline -pipe -ffast-math -std=c++11
 
-SRCWILD = $(wildcard basenlp/*.cpp core/*.cpp common/*.cpp lex-align/*.cpp)
+SRCWILD = $(wildcard basenlp/*.cpp core/*.cpp common/*.cpp lexicon/*.cpp)
 OBJs = $(patsubst %.cpp, %_at.o, $(SRCWILD))
 
 DEMO = parser_test 

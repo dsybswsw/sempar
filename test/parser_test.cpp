@@ -16,7 +16,7 @@ using std::vector;
 using std::pair;
 using semantic::Params;
 
-int main(int argc, char* argv[]) {
+int test_simple_parser() {
     //google::InitGoogleLogging(argv[0]);  
     //FLAGS_log_dir = "./log";
     semantic::Parser* parser = new semantic::Parser(); 
@@ -43,6 +43,16 @@ int main(int argc, char* argv[]) {
         std::cout << i + 1 << "best result: " << jstr << std::endl;
     }
     delete parser;
+    return 0;
+}
+
+int test_qa_parser() {
+    return 0;
+}
+
+int main(int argc, char* argv[]) {
+    assert(test_simple_parser() == 0);
+    assert(test_qa_parser() == 0);
     return 0;
 }
 

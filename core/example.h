@@ -12,6 +12,7 @@
 #define SEMANTIC_EXAMPLE_H
 
 #include "formula.h"
+#include "lex_data_struct.h"
 
 namespace semantic {
 class Example {
@@ -26,6 +27,7 @@ public:
     ULONG _index;
     std::string _uttrance;
     std::vector<std::string> _tokens;
+    LexForm _lex_form;
 
     // result information.
     int _nbest;
